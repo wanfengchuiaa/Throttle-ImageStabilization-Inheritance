@@ -10,27 +10,46 @@
 <body>
 <script>
     /**
-     * deepCopy的实现
+     * 1.JSON 的实现  不能实现对函数的拷贝
      **/
 
-    //1.localStorage 的实现  不能实现对函数的拷贝
+    function deepCopy(newobj,oldobj) {
+        return oldobj = JSON.parse(JSON.stringify(newobj))
+    }
+    let a1 = {
+        name:'张三',
+        age:18,
+        arr:[1,2,3,{age:28}],
+        obj:{
+            sex:'男'
+        }
+    }
+   const b1 =  deepCopy(a1)
+    b1.arr[3].age = 30
+    console.log(a1,b1)
 
-   //  function deepCopy(newobj,oldobj) {
-   //      return oldobj = JSON.parse(JSON.stringify(newobj))
-   //  }
-   //  let a = {
-   //      name:'张三',
-   //      age:18,
-   //      arr:[1,2,3,{age:28}],
-   //      obj:{
-   //          sex:'男'
-   //      }
-   //  }
-   // const b =  deepCopy(a)
-   //  b.arr[3].age = 30
-   //  console.log(a,b)
+    /**
+     * 2.es6的展开语法  缺点 如果拷贝对象内部还有引用数据类型的话 则无法实现深拷贝
+     * **/
 
-   //普通函数递归
+    let a2 = {
+            name:'张三',
+            age:18,
+            arr:[1,2,3,{age:28}],
+            obj:{
+                sex:'男'
+            },
+            a(a) {
+                console.log(a)
+            }
+        }
+    let b2 = {...a2}
+    a2.arr[2] = 30
+    console.log(a2,b2)
+
+   /**
+    * 3.普通函数递归
+    * **/
 
     function deepCopy(source) {
     if(typeof source !=='object' || typeof source == null) {
@@ -49,7 +68,7 @@
     return target
     }
 
-     let a = {
+     let a3 = {
          name:'张三',
          age:18,
          arr:[1,2,3,{age:28}],
@@ -60,11 +79,13 @@
              console.log(a)
          }
      }
-   const b = deepCopy(a)
-    a.obj.sex='女'
-    a.a('z')
-    b.a('s')
-    console.log(a,b)
+   const b3 = deepCopy(a3)
+    a3.obj.sex='女'
+    a3.a('z')
+    b3.a('s')
+    console.log(a3,b3)
+
+
 </script>
 </body>
 </html>
