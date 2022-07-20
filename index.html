@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Document</title>
+</head>
+<body>
+<input id="input" type="text"/>
+<script>
+
+
+    //new 的过程
+
+    function myNew(Fn, ...args) {
+        const obj = {}
+        obj.__proto__ = Fn.prototype
+        Fn.apply(obj, args)
+        return obj
+    }
+
+    function A(a, b) {
+        this.a = a
+        this.b = b
+    }
+
+    const newobj = myNew(A, '张三', '李四')
+    console.log(newobj)
+
+    const input = document.getElementById('input')
+    防抖
+
+    function throttle(fn, await) {
+        let timer = null
+        return function (...args) {
+            if (timer) {
+                clearTimeout(timer)
+            }
+            timer = setTimeout(() => {
+                fn.apply(this, args)
+            }, await)
+        }
+    }
+
+    input.addEventListener('input', throttle(() => {
+        console.log('这是一个防抖函数')
+    }, 1000))
+
+
+    节流
+
+    function stabilizationottle(fn, await) {
+        let flag = true
+        return function (...args) {
+            if (!flag) return
+            fn.apply(this, args)
+            flag = false
+            setTimeout(() => {
+                flag = true
+            }, await)
+        }
+    }
+
+    input.addEventListener('input', stabilizationottle(() => {
+        console.log('这是一个节流函数')
+    }, 1000))
+
+
+    //继承
+    function Father(a) {
+        this.a = a
+    }
+
+    Father.prototype.get = () => {
+        return '爱你'
+    }
+
+    function Son() {
+        Father.call(this, '我是a')
+    }
+
+    Son.prototype = new Father('薛之谦')
+    // Son.prototype = Object.create(Father.prototype)  //让Son的prototype指向Father.prototype
+    Son.prototype.constructor = Son   //两者都可
+    const son = new Son()
+    const father = new Father('薛之谦')
+    console.log(father)
+    console.log(son.get())
+
+
+</script>
+</body>
+</html>
