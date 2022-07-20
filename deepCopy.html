@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    /**
+     * deepCopy的实现
+     **/
+
+    //1.localStorage 的实现  不能实现对函数的拷贝
+
+   //  function deepCopy(newobj,oldobj) {
+   //      return oldobj = JSON.parse(JSON.stringify(newobj))
+   //  }
+   //  let a = {
+   //      name:'张三',
+   //      age:18,
+   //      arr:[1,2,3,{age:28}],
+   //      obj:{
+   //          sex:'男'
+   //      }
+   //  }
+   // const b =  deepCopy(a)
+   //  b.arr[3].age = 30
+   //  console.log(a,b)
+
+   //普通函数递归
+
+    function deepCopy(source) {
+    if(typeof source !=='object' || typeof source == null) {
+        return source
+    }
+    const target = Array.isArray(source) ?[]:{}
+    for(const k in source) {
+        if(Object.prototype.hasOwnProperty.call(source,k)){
+            if(typeof source[k] ==='object' && source!==null) {
+                target[k] = deepCopy(source[k])
+            } else {
+                target[k] = source[k]
+            }
+        }
+    }
+    return target
+    }
+
+     let a = {
+         name:'张三',
+         age:18,
+         arr:[1,2,3,{age:28}],
+         obj:{
+             sex:'男'
+         },
+         a(a) {
+             console.log(a)
+         }
+     }
+   const b = deepCopy(a)
+    a.obj.sex='女'
+    a.a('z')
+    b.a('s')
+    console.log(a,b)
+</script>
+</body>
+</html>
